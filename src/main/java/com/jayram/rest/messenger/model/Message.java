@@ -21,6 +21,7 @@ public class Message {
 		this.id = id;
 		this.message = message;
 		this.author = author;
+		this.created = new Date();
 	}
 	
 	public long getId() {
