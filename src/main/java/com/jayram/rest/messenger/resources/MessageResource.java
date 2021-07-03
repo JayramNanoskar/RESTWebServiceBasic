@@ -29,9 +29,26 @@ public class MessageResource {
 
 	MessageService messageService = new MessageService();
 	
+	/*
+	 * Marshaling is the process of transforming the memory representation of an object into a data format suitable for storage or transmission.
+	 * JAX-RS calls appropriate Marshaler and UnMarshaler, to convert object to either JSON or XML and to convert either JSON or XML to object respectively, according to request header.
+	 */
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Message> getMessages(@BeanParam MessageFilterBean filterBean){
+	public List<Message> getJsonMessages(@BeanParam MessageFilterBean filterBean){
+		if(filterBean.getYear() > 0){
+			return messageService.getAllMessagesForYear(filterBean.getYear());
+		}
+		if(filterBean.getStart() >= 0 && filterBean.getSize() > 0){
+			return messageService.getAllMessagesPaginated(filterBean.getStart(), filterBean.getSize());
+		}
+		return messageService.getAllMessages();
+	}
+	
+	@GET
+	@Produces(MediaType.APPLICATION_XML)
+	public List<Message> getXmlMessages(@BeanParam MessageFilterBean filterBean){
 		if(filterBean.getYear() > 0){
 			return messageService.getAllMessagesForYear(filterBean.getYear());
 		}
