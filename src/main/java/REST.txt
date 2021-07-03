@@ -1,0 +1,427 @@
+---------------------------------------------------- REST Web Services ---------------------------------------------------------------
+**Webservice types:
+1.SOAP(Older) - specification for SOAP, called JAX-WS
+2.REST(Newer) - specification for REST, called JAX-RS
+
+
+**Webservice:
+-It is a service made available over the web.
+-Webservice gives interoperatibility. Means C++ application can call Java or .Net webservice.
+-We can have two different application wriiten in different technologies that communicate with each other during execution time, they can call each others methods.
+-We can see some Games which can post on Facebook application wall even though they are not signed by facebook themselves. It is possible because the app company like facebook or twitter publish their webservices that let other developer call them from their code. So other developer can consume those webservices and read/access the data & can post on facebook, twitter etc.
+
+
+**Website vs Webservice:
+-Website is meant for human consumption while Webservice is meant for code consumption or application level consumption.
+-Website gives response in HTML/CSS form. Webservice gives response which does not have HTML/CSS, it contains data but it is return in XML/JSON format.
+
+
+**REST(REpresentational State Transfer):
+-They are webservices, they are modern, lightweight, uses HTTP which drives the web.
+-Client sends HTTP request and server returns back HTTP response, it is similar to websites but instead of response being complete webpages with styling only data is return. Then client can format, present the data as desired.
+
+
+**Protocol used in Webservice:
+-Protocol is the message format used. 
+-This protocol is sometimes standardize in some webservices for example, SOAP webservices uses standard protocol for communication which is the SOAP. Those messages are in XML format & there is specific rules which details how that xml should be. So client and server needs to talk to each other using SOAP protocol only.
+-Protocol in case of REST webservices is none. Rest client can send messages using XML/JSON/Text format or any other new format as long as client and server understand each other.
+
+
+**HTTP exchange in webservices:
+-Communication happens over HTTP.
+-In HTTP, there are different methods are available like GET, POST, PUT, etc.
+-In case of REST, we can use any HTTP method as per guidelines defined.
+
+
+**Service definition in webservices:
+-In SOAP, service definition is called WSDL, it is a document which defines what the webservice does. So it is standard document in case of SOAP.
+-In REST, there is no/little documentation or service definition. In fact best desiged RESTful webservices wouldnot even need any documentation.
+
+
+**Webservice specification:
+-Specification are set of rules that dictate what something should be.
+-In SOAP, there is webservice specification that dictates what every SOAP service should be. It is actually desiged, maintained by committee. If SOAP webservice does not follow even any one of the rule then by definition it is not SOAP webservice at all. So there are bunch of rules every SOAP webservice have to follow.
+-In REST, there is no webservice specification, no committee. It is concept or Architectural style or guidelines to make webservice as easy as for consumer and developer for maintenance purpose. So our webservices can be Completely RESTful or Not fully RESTful or Not RESTful.
+
+
+**REST and HTTP:
+-Concept of REST are very closely related to HTTP.
+-HTTP(Hyper Text Transfer Protocol) is language or mechanism for communication. HTTP is way to exchange and communicate information online. Hyper Text is structured form of text. It contains logical links to other text called HyperLinks. Popular way to write hypertext is using language HTML. There are many HTTP concept that have inspired REST.
+
+
+**HTTP concepts:
+1>Resource bases URI:
+Consider, Weather website URI, Action based URI:
+								weatherapp.com/weatherLookup.do?zipcode=12345
+Restful API, Resource based URI:			
+					weatherapp.com/zipcode/12345
+-It shows just like looking up into it and not like doing processing or performing operations. URI doesnot shows it is doing any processing even though it is doing, it shows like it is doing just lookup.
+
+
+2>HTTP methods:
+Depending on operations we need to choose right HTTP method.
+GET
+POST
+PUT
+DELETE
+-A good RESTful api makes use of HTTP methods. 
+
+
+3>Metadata:
+-It is extra information, may be in the form of HTTP status code, headers etc.
+Example.. 200-Success, 500-Server error, 404-Not found
+
+
+4>HTTP exchange:
+-There are some metadata about message that exchange i.e. with headers in every HTTP request and response 
+Example.. Content-types
+-The same web api could potentially return multiple content types, so same api could return xml or it could return json as per what client want, it called Content negotiation.
+
+
+**Resource URIs:
+-Let consider social media application named messenger that lets people post messages as status update, they can also write comments on messages, like & share other messages. Users also has profile information where they can create or update their profile.
+-Every entity/thing has URL which is unique and standard.
+-It is most like same as accessing static pages kept in some directory.
+Example..
+->profiles
+		-abc.html
+		-pqr.html
+		-mno.html
+So while accessing page, URI would be   -> /profiles/abc.html
+Then RESTful URI would be 				-> /profiles/abc
+If we want to make it generic 			-> /profiles/{profileName}
+-While designing RESTful URI, there must be Nouns(profiles) but not verbs(getprofiles) and must be in plurals.	
+-Resource based URI makes thing simpler and resistance to change.
+-There may be Resource relations URI like -> /messages/{messageId}/comments/{commentId}
+Here it is very clear that comment belong to some messageId. They are having one to many relationship.
+
+There are two types of RESTful resource URIs
+1.Instance Resource URI
+-Instance Resource URI which gives single instance.
+
+2.Collection Resource URI
+-Collection Resource URI which gives collection of instance resources.
+-To filter results or paginating results is done by providing query parameters while accessing collection URIs.
+Example.. /messages?offset=20&limit=5
+
+
+**HTTP Methods:
+Common methods- GET, POST, PUT, DELETE
+A bit Uncommon methods- HEAD, OPTIONS
+-Same URI can be use for multiple operations depending on HTTP method used.
+Example..
+Getting a message  	--GET-> /messages/{messageId}  -> /messages/10
+Updating a message  --PUT-[requires Request body also]> /messages/{messageId}  -> /messages/10 
+Deleting a message  --DELETE-> /messages/{messageId}  -> /messages/10
+Creating a message  --POST-[requires Request body also]> /messages -> /messages
+
+
+
+**Method Idempotence:
+-Idempotence is the property of certain operation in mathematics and computer science, that can be applied multiple times without changing the result beyond the initial application.
+GET - read-only method, It is safe to make duplicate GET requests, no affect on a server. Safely repeatable operation. So Idempotent.
+POST - write method, It is not safe to make duplicate POST requests, affects on a server, creates new resource. Non-Safely repeatable operation. So Non-Idempotent.
+PUT - write method, It is safe to make duplicate PUT requests, no affect on a server and makes impact on very first request only. Safely repeatable operation. So Idempotent.
+DELETE - write method, It is safe to make duplicate DELETE requests, no affect on a server and makes impact on very first request only. Safely repeatable operation. So Idempotent.
+-Hence, resource creation request should always be via POST because resource creation request are non-idempotent, we do create new resource every time. 
+-Only Caching GET responses is possible.
+
+
+**REST Response:
+-RESTful service can return data in any format xml or json or any other valid format.
+-Json is more compact & verbose than XML and for javascript client, it is very handy to convert JSON response into javascript object.
+-Type of content is being sent back as response is an information available in headers. Client examine Content-types in response headers and parse value accordingly.
+-Status codes:
+Total 5 catagories from 1XX to 5XX.
+1XX- Informational codes
+2XX- Success codes like 200-OK(with GET), 201-Created(with POST), 204-No content(with DELETE) etc.
+3XX- Redirection codes like 302-Found, 307-Temporary Redirect, 304-Not modified etc. Server ask client to redirect.
+4XX- Client Error codes like 400-Bad request, 401-Unauthorized, 403-Forbidden, 404-Not found, 415-Unsupported media type etc. Server returns these code when client make an error in request.
+5XX- Server Error codes like 500-Intenal server error etc. Indicates something went wrong while processing at server. 
+
+
+**HATEOAS(Hypermedia/Hypertext As The Engine Of Application State):
+-In HATEOAS, with subsequent response, it additionally provide other collection resource URIs also.
+-Example.. JSON response for a message is as
+->Without HATEOAS concept
+{
+	"id": "1",
+	"message": "Hello World",
+	"created": "2021-01-01T12:00:00.000",
+	"author": "John"
+}
+
+->With HATEOAS concept
+{
+	"id": "1",
+	"message": "Hello World",
+	"created": "2021-01-01T12:00:00.000",
+	"author": "John",
+	"href": "/messages/1",
+	"comments-href": "/messages/1/comments"
+}
+
+
+->With some additionally HATEOAS concept
+{
+	"id": "1",
+	"message": "Hello World",
+	"created": "2021-01-01T12:00:00.000",
+	"author": "John",
+	"links": [
+		{
+			"href": "/messages/1",
+			"rel": "self"
+		},
+		{
+			"href": "/messages/1/comments",
+			"rel": "comments"
+		}
+	]
+}
+
+-HATEOAS is a way to provide links to resources in the API response, so the client doesnot have to deal with URI construction and business flow. Client make a request, next step along with URI for next step are handed to them in response. When writting API we can choose to add these URIs using href attribute, we can also provide more information about relation to the linked resource using links attribute.
+ 
+
+**The Richardson Maturity Model:
+-Model to know how RESTful api is, called Richardson Maturity Model.
+-It difines 4 levels for classification as Level 0, Level 1, Level 2, Level 3.
+
+1)Level 0 / Swamp of POX(Plain Old XML) - Not RESTful API, only one URI where service is exposed & this URL receives all request from client. Request body contains all the details what to do/ what type of operation to do. Here everything is in XML itself.
+For example..
+To create new message, Request body ->
+<create-message>
+	<message-content>Hello world!!</message-content>
+	<message-author>John</message-author>
+</create-message>
+
+To delete comment, Request body ->
+<delete-comment>
+	<message-id>30</message-id>
+	<comment-id>2</comment-id>
+</delete-comment>
+
+-Since the action is the part of message itself, same URI could work. Same HTTP method can be use for each operations, that is what SOAP does, the request is always POST & post body contains all the information.
+
+2)Level 1 - Using Resource URIs, individual URIs for each resource.
+
+3)Level 2 - Using HTTP methods, uses of right HTTP methods & status codes.
+
+4)Level 3 - Using HATEOAS, response has links that the client can use.
+
+
+
+**What Is JAX RS?:
+-JAX-RS api has interfaces & annotations belongs to javax.ws.rs.*. 
+-JAX RS has different implementations libraries like Jersey, RESTEasy, RESTLet etc.
+-We can seamlessly replace one library with other because they are implementations of JAX-RS api only.
+-Jersey is Reference/ model implementation for JAX-RS specification. Jersey implementation is designed by most of those people who had desiged JAX-RS specification.
+
+
+**Setting Up in Eclipse for Jersey:
+-Add any server to eclipse IDE like Apache tomcat.[Consider, Tomcat 8 is configured in Eclipse neon]
+-Maven is java project management utility for Adding dependencies, handling lifecycle etc.
+-Choose maven archetype(template) like jersey-quickstart-webapp. Archetype is used to bootstrap a project. Let say creating project named messenger.
+-If archetype is not visible then we need to manually configure it as 
+Archetype Group Id: org.glassfish.jersey.archetypes
+Archetype Artifact Id: jersey-quickstart-webapp
+Archetype Version: 2.26-b03
+	OR 
+To get all the maven archetype available from remote into eclipse we can configure https://repo1.maven.org/maven2/archetype-catalog.xml in Remote Archetype Catalog.
+
+-Finally run the application on server as
+http://localhost:8080/messenger/webapi/myresource
+messenger - context path
+webapi - url-pattern from web.xml
+myresource - resource URI handler
+
+-Our web.xml be like
+	<web-app>
+		<servlet>
+			<servlet-name>Jersey Web Application</servlet-name>
+			<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class> <!-- Any request having matching url pattern get handled by this Jersey Servlet -->
+			<init-param>
+				<param-name>jersey.config.server.provider.packages</param-name>
+				<param-value>com.jayram.rest.messenger</param-value> <!-- Jersey lookups for resource class in this package for request handling & delegates execution-->
+			</init-param>
+			<load-on-startup>1</load-on-startup>
+		</servlet>
+		<servlet-mapping>
+			<servlet-name>Jersey Web Application</servlet-name>
+			<url-pattern>/webapi/*</url-pattern>
+		</servlet-mapping>
+	</web-app>
+
+-So any request has that above mentioned url-pattern will be handle by jersey servlet from jersey library. Then jersey servlet look at our code/resource to find out what to do from then on. So jersey deligates execution to resource uri class.
+
+
+
+**Creating a Resource:
+1)Create a new java class.
+2)Add a method that returns the response.
+3)Make sure your class is in the package configured in Jersey servlet's init-param.
+4)Annotate class with @Path annotation.
+5)Annotate method with the right HTTP method annotation, annotate method with the @Produces specifying response format.
+
+
+**Returning XML Response:
+1)Create the necessary model and service classes.
+2)Ensure the model classes have a no-argument constructor, because whenever we are messing around with any xml or json conversion we need no-argument constructor to create new instance of class.
+3)Call the service from resource and return response.
+4)Update the @Produces annotation to xml format.
+5)Annotate model class with @XmlRootElement(annotation from JAXB) otherwise gets 500 error while returning XML response as SEVERE: MessageBodyWriter not found.
+-Actually JAXB does the xml conversion, JAXB comes bundled with Java.
+
+
+**Installing a REST API client:
+-To test out our API and make different kind of requests, which are not possible in standard browser(usually capable of handling GET & POST methods), so we can use REST API client.
+-POSTMAN is one of the REST API client which is available as extension in a browser or as a standalone application.
+
+
+**Building Service Stubs:
+-We can use JDBC, Hibernate or any In-memory set of objects(i.e. HashMap) act as database to create service stubs which supports all CRUD operations.
+
+
+**Accessing Path params:
+-We can map subsequent resource path using @Path annotation on method level. 
+-We can use regular expression patterns within @Path values.
+-To get hold of parameters in variable portion of URL & to inject that value as a parameter to method, we can use @PathParam annotation.
+
+
+**Returning JSON Response:
+-Need to add suitable dependency in pom.xml and add annotation on method for json response.
+
+
+**Implementing POST Method:
+1)Annotate the handler method with @POST and @Produces and or @Consumes annotation.
+2)Accept the Model type as argument to bind to the request body.
+
+
+** Implementing Update and Delete:
+1)Annotate the handler method with @PUT or @DELETE and @Produces and or @Consumes annotation and @Path annotation.
+2)Accept the inputs as arguments to bind to the request body.
+
+
+**Pagination and Filtering:
+-To get hold on query parameters from resource URI, we can use @QueryParam annotation. In case resource URI does not contain certain query parameter then for that used parameter, default value will get assigned as per java.
+
+
+**The Param Annotations:
+-When query parameters separated by ';' instead of '?', we can use @MetrixParam annotation. It is similar to @QueryParam annotation.
+-JAX-RS & Jersey supports it but it is lessly used. It is deprecated now.
+-When we want to access request headers values, we can use @HeaderParam annotation.
+-When we want to access cookie values, we can use @CoockieParam annotation.
+-When HTML form submits data to REST api, we can use @FormParam annotation to capture the data. It is less commonly used.
+
+
+**Using Context and BeanParam annotations:
+-Instead of taking out single value from URI, there is way to hold on bunch of values using Context and BeanParam annotations in JAX-RS & Jersey.
+-@Context is special annotation which can be applied to few classes like UriInfo(to get URI info), HttpHeaders(to get headers info) etc.
+-When we feel parameter list is pretty long, we can use @BeanParam annotations with custom class having all parameter list. We can then access parameters with respected getters.
+
+
+**Implementing Subresources:
+-Consider URI-> /messages/{messageId}/comments/{commentId} , here comments is not root resource, it is sub-resource.
+-We can delegate execution to sub-resource from root resource. Root resource method return type must be sub-resource to delegate control.
+-The class level @Path annotation is optional for sub-resources.
+-We can access root/parent resource path parameter inside child/sub-resource method parameter.
+-We can use @xmlTransient annotation on getter in model class to ignore field from xml or json conversion/representation.
+
+
+**Sending Status Codes and Location Headers in response:
+-For sending desired Status Codes, we can return new instance of Response class from javax.ws.rs.core.Response where we can set status code and desired entity etc. with builder design pattern.
+-For example..
+				@POST
+				public Response addMessage(Message message)
+				{
+					Message newMessage = messageService.addMessage(message);
+					return Response.status(Status.CREATED)
+									.entity(newMessage)
+									.build();
+				}
+-For sending Location Headers, we can return new instance of Response class with builder pattern.
+-For example..
+				@POST
+				public Response addMessage(Message message, @Context UriInfo uriInfo)
+				{
+					Message newMessage = messageService.addMessage(message);
+					String newId = String.valueOf(newMessage.getId());
+					URI uri = uriInfo.getAbsolutePathBuilder().path(newId).build();
+					return Response.created(uri) //sets status code & location headers also.
+									.entity(newMessage)
+									.build();
+				}
+
+
+**Handling Exceptions in JAX-RS:
+-When exceptions are not handled properly in REST api, we get unwanted response containg HTML code from server. We must get proper RESTful response even in case of exception, Hence for simple exception handling we can do as follow
+1)Creating exception payload.
+public class ErrorMessage{
+	private String errorMessage;
+	private int errorCode;
+	private String documentation;
+	//constructor, setters, getters
+}
+
+2)Creating custom exception which we would throw.
+public class DataNotFoundException extends RuntimeException{
+	private static final long serialVersionUID = -6898766564767898765L;
+	public DataNotFoundException(String message){
+		super(message);
+	}
+}
+
+3)Creating custom exception mapper. So that we can map raised exception using exception mapper. ExceptionMapper is from JAX-RS.
+@Provider
+public class DataNotFoundExceptionMapper implements ExceptionMapper<DataNotFoundException>{
+	@Override
+	public Response toResponse(DataNotFoundException ex){
+		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 404, "https://www.w3.org/Protocols/HTTP/HTRESP.html");
+		return Response.status(Status.INTERNAL_SERVER_ERROR)
+						.entity(errorMessage)
+						.build();
+	}
+}
+-@Provider annotation registers class into JAX-RS. So every time exception occurs, JAX-RS looks for maching exception mapper and delegates execution otherwise exception bubbled up upto server, to default exception handler.
+
+4)Creating generic exception mapper. It is recommended to create more custom exception mapper.
+@Provider
+public class GenericExceptionMapper implements ExceptionMapper<Throwable>{
+	@Override
+	public Response toResponse(Throwable ex){
+		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage(), 500, "https://www.w3.org/Protocols/HTTP/HTRESP.html");
+		return Response.status(Status.INTERNAL_SERVER_ERROR)
+						.entity(errorMessage)
+						.build();
+	}
+}
+
+
+**Using WebApplicationException for Handling Exceptions:
+-WebApplicationException are exception about those JAX-RS is already aware of.
+-For exception handling we can handle WebApplicationException and for more specific handling, we can use child of WebApplicationException class i.e. ClientErrorException(i.e. 4XX), RedirectionException(3XX), ServerErrorException(5XX).
+
+
+**HATEOAS - implementation: 
+-To make response navigable by providing links to resources like link to self or to other resource.
+-We can create Link model class or can use inbuilt Link class which comes with JAX-RS and can use it in our resource classes.
+-Standard in HATEOAS is every resource will have link to self.
+
+
+**Content Negotiation:
+-It is a way in which client can ask a server for a particular content type in response. They can also send request in different content type to the server by telling what type of content is.
+-Marshaling is the process of transforming the memory representation of an object into a data format suitable for storage or transmission.
+JAX-RS calls appropriate Marshaler and UnMarshaler, to convert object to either JSON or XML and to convert either JSON or XML to object respectively, according to request header.
+-Inside headers client can send content type & Accept value.
+-In headers, 
+Accept - "text/xml" means client expecting response in xml, so server method must produce that type of response to serve it successfully. 
+Content-Type - "text/xml" means client sending request in xml, so server method must consume that type of request to serve it successfully.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
