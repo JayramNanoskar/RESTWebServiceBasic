@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.NotFoundException;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
 import com.jayram.rest.messenger.database.DatabaseClass;
 import com.jayram.rest.messenger.model.Comment;
+import com.jayram.rest.messenger.model.ErrorMessage;
 import com.jayram.rest.messenger.model.Message;
 
 public class CommentService {
@@ -18,8 +24,20 @@ public class CommentService {
 	}
 	
 	public Comment getComment(long messsageId, long commentId){
+		ErrorMessage errorMessage = new ErrorMessage("Not Found", 404, "https://www.w3.org/Protocols/HTTP/HTRESP.html");
+		Response response = Response.status(Status.NOT_FOUND)
+						.entity(errorMessage)
+						.build();
+		Message message = messages.get(messsageId);
+		if(message == null){
+			throw new WebApplicationException(response);
+		}
 		Map<Long, Comment> comments = messages.get(messsageId).getComments();
-		return comments.get(commentId);
+		Comment comment = comments.get(commentId);
+		if(comment == null){
+			throw new NotFoundException(response);
+		}
+		return comment;
 	}
 	
 	public Comment addComments(long messsageId, Comment comment){
